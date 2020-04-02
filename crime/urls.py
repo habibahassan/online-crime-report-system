@@ -15,9 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-
+from django.shortcuts import redirect
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
-    url(r'admin/', admin.site.urls),
-    url(r'',include('report.urls')),
-    url(r'accounts/', include('registration.backends.simple.urls')),
+    url(r'^admin/', admin.site.urls),
+    url(r'^report/',include('report.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
+    # url(r'^logout/$', views.logout, {"next_page": '/'}),
+    url('^$', lambda x: redirect('/report'))
 ]
+if settings.DEBUG==True:
+    urlpatterns+= static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
